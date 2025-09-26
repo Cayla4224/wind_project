@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Author Dashboard - Wind E-Book Store</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="/">
+                    <i class="fas fa-book"></i>
+                    <span>Wind E-Book Store</span>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/#books" class="nav-link">Books</a>
+                <a href="/reader" class="nav-link">Reader View</a>
+                <div class="nav-user">
+                    <div class="user-dropdown">
+                        <button class="user-btn" id="user-btn">
+                            <i class="fas fa-user"></i>
+                            <span id="user-name">Author</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-content">
+                            <a href="#" id="profile-link"><i class="fas fa-user-edit"></i> Profile</a>
+                            <a href="#" id="logout-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Header -->
+    <section class="dashboard-header">
+        <div class="container">
+            <h1><i class="fas fa-pen-fancy"></i> Author Dashboard</h1>
+            <p>Manage your books and reach readers worldwide</p>
+        </div>
+    </section>
+
+    <!-- Dashboard Content -->
+    <section class="dashboard-content">
+        <div class="container">
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="total-books">0</h3>
+                        <p>Total Books</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-headphones"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="total-audiobooks">0</h3>
+                        <p>Audiobooks</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="total-readers">0</h3>
+                        <p>Readers</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="total-earnings">$0</h3>
+                        <p>Total Earnings</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="dashboard-actions">
+                <button class="btn btn-primary" onclick="showAddBookModal()">
+                    <i class="fas fa-plus"></i> Add New Book
+                </button>
+                <button class="btn btn-secondary" onclick="showUploadAudiobookModal()">
+                    <i class="fas fa-microphone"></i> Add Audiobook
+                </button>
+            </div>
+
+            <!-- Books Management -->
+            <div class="dashboard-section">
+                <div class="section-header">
+                    <h2>My Books</h2>
+                    <div class="section-filters">
+                        <select id="book-filter">
+                            <option value="all">All Books</option>
+                            <option value="published">Published</option>
+                            <option value="draft">Draft</option>
+                            <option value="audiobooks">With Audiobooks</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="books-table-container">
+                    <table class="books-table" id="books-table">
+                        <thead>
+                            <tr>
+                                <th>Cover</th>
+                                <th>Title</th>
+                                <th>Genre</th>
+                                <th>Price</th>
+                                <th>Audiobook</th>
+                                <th>Published</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="books-table-body">
+                            <!-- Books will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Add Book Modal -->
+    <div class="modal" id="add-book-modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2 id="book-modal-title">Add New Book</h2>
+                <span class="close" onclick="closeAddBookModal()">&times;</span>
+            </div>
+            <form id="add-book-form" enctype="multipart/form-data">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="book-title">Title *</label>
+                        <input type="text" id="book-title" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="book-genre">Genre</label>
+                        <select id="book-genre" name="genre">
+                            <option value="">Select Genre</option>
+                            <option value="Fiction">Fiction</option>
+                            <option value="Non-Fiction">Non-Fiction</option>
+                            <option value="Mystery">Mystery</option>
+                            <option value="Romance">Romance</option>
+                            <option value="Sci-Fi">Sci-Fi</option>
+                            <option value="Fantasy">Fantasy</option>
+                            <option value="Biography">Biography</option>
+                            <option value="History">History</option>
+                            <option value="Self-Help">Self-Help</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="book-isbn">ISBN</label>
+                        <input type="text" id="book-isbn" name="isbn">
+                    </div>
+                    <div class="form-group">
+                        <label for="book-price">Price ($)</label>
+                        <input type="number" id="book-price" name="price" step="0.01" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="book-published-date">Published Date</label>
+                        <input type="date" id="book-published-date" name="published_date">
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="book-is-free" name="is_free">
+                            <span>Make this book free</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="book-description">Description *</label>
+                    <textarea id="book-description" name="description" rows="4" required></textarea>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="book-cover">Cover Image</label>
+                        <input type="file" id="book-cover" name="cover_image" accept="image/*">
+                        <small>Recommended: 600x800px, JPG or PNG</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="book-file">E-Book File</label>
+                        <input type="file" id="book-file" name="ebook_file" accept=".pdf,.epub,.txt">
+                        <small>Supported: PDF, EPUB, TXT</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="audiobook-file">Audiobook File (Optional)</label>
+                        <input type="file" id="audiobook-file" name="audiobook_file" accept="audio/*">
+                        <small>Supported: MP3, WAV, M4A</small>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeAddBookModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <span id="book-submit-text">Add Book</span>
+                        <i class="fas fa-spinner fa-spin" id="book-submit-spinner" style="display: none;"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div class="loading-spinner" id="loading-spinner" style="display: none;">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <span id="toast-message"></span>
+        <button class="toast-close" onclick="hideToast()">&times;</button>
+    </div>
+
+    <script src="/js/auth.js"></script>
+    <script src="/js/author.js"></script>
+</body>
+</html>

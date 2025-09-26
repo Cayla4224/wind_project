@@ -1,0 +1,31 @@
+{
+  "name": "wind-ebook-store",
+  "version": "1.0.0",
+  "description": "A comprehensive e-book store library with audiobooks, subscriptions, and user management",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "demo": "node demo-data.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ebook",
+    "audiobook",
+    "library",
+    "subscription",
+    "store"
+  ],
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.2",
+    "nodemon": "^3.1.10",
+    "sqlite3": "^5.1.7"
+  }
+}
