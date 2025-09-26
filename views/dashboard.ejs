@@ -1,0 +1,319 @@
+<%- include('layout', { body: `
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">
+                <i class="fas fa-tachometer-alt me-2"></i>
+                Dashboard
+            </h1>
+        </div>
+    </div>
+    
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-6 col-xl-3 mb-3">
+            <div class="card stats-card text-white bg-primary">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="mb-0">${stats.manuscriptCount}</h4>
+                            <p class="mb-0">Manuscripts</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-file-pdf fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 col-xl-3 mb-3">
+            <div class="card stats-card text-white bg-success">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="mb-0">${stats.audioCount}</h4>
+                            <p class="mb-0">Audio Files</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-music fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 col-xl-3 mb-3">
+            <div class="card stats-card text-white bg-info">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="mb-0">${stats.manuscriptCount + stats.audioCount}</h4>
+                            <p class="mb-0">Total Files</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-folder fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 col-xl-3 mb-3">
+            <div class="card stats-card text-white bg-warning">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="mb-0">Active</h4>
+                            <p class="mb-0">System Status</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-check-circle fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Quick Actions -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-bolt me-2"></i>
+                        Quick Actions
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="d-grid">
+                                <button class="btn btn-outline-primary btn-lg" onclick="showUploadModal('manuscript')">
+                                    <i class="fas fa-upload me-2"></i>
+                                    Upload Manuscript
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="d-grid">
+                                <button class="btn btn-outline-success btn-lg" onclick="showUploadModal('audio')">
+                                    <i class="fas fa-music me-2"></i>
+                                    Upload Audio File
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="d-grid">
+                                <a href="/admin/manuscripts" class="btn btn-outline-info btn-lg">
+                                    <i class="fas fa-list me-2"></i>
+                                    Browse Library
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recent Activity -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-clock me-2"></i>
+                        Welcome to the E-Book Library Admin Panel
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p>Use this dashboard to manage your digital library content:</p>
+                    <ul>
+                        <li><strong>Manuscripts:</strong> Upload and manage PDF, DOCX, and EPUB files</li>
+                        <li><strong>Audio Files:</strong> Upload and manage MP3, WAV, and other audio formats</li>
+                        <li><strong>Organization:</strong> Use categories, tags, and search to organize content</li>
+                        <li><strong>Security:</strong> All uploads are validated and stored securely</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Upload Modals -->
+<!-- Manuscript Upload Modal -->
+<div class="modal fade" id="manuscriptUploadModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-file-pdf me-2"></i>
+                    Upload Manuscript
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="manuscriptUploadForm" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="manuscriptTitle" class="form-label">Title *</label>
+                            <input type="text" class="form-control" id="manuscriptTitle" name="title" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="manuscriptAuthor" class="form-label">Author *</label>
+                            <input type="text" class="form-control" id="manuscriptAuthor" name="author" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="manuscriptCategory" class="form-label">Category</label>
+                        <input type="text" class="form-control" id="manuscriptCategory" name="category" placeholder="e.g., Fiction, Non-Fiction, Technical">
+                    </div>
+                    <div class="mb-3">
+                        <label for="manuscriptDescription" class="form-label">Description</label>
+                        <textarea class="form-control" id="manuscriptDescription" name="description" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="manuscriptFile" class="form-label">File (PDF, DOCX, EPUB) *</label>
+                        <input type="file" class="form-control" id="manuscriptFile" name="manuscriptFile" accept=".pdf,.docx,.epub" required>
+                        <div class="form-text">Maximum file size: 50MB</div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="uploadManuscript()">
+                    <i class="fas fa-upload me-2"></i>Upload
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Audio Upload Modal -->
+<div class="modal fade" id="audioUploadModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-music me-2"></i>
+                    Upload Audio File
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="audioUploadForm" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="audioTitle" class="form-label">Title *</label>
+                            <input type="text" class="form-control" id="audioTitle" name="title" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="audioAuthor" class="form-label">Author *</label>
+                            <input type="text" class="form-control" id="audioAuthor" name="author" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="audioDuration" class="form-label">Duration</label>
+                            <input type="text" class="form-control" id="audioDuration" name="duration" placeholder="e.g., 2:30:45">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="audioDescription" class="form-label">Description</label>
+                        <textarea class="form-control" id="audioDescription" name="description" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="audioFile" class="form-label">File (MP3, WAV, M4A, FLAC) *</label>
+                        <input type="file" class="form-control" id="audioFile" name="audioFile" accept=".mp3,.wav,.m4a,.flac" required>
+                        <div class="form-text">Maximum file size: 200MB</div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-success" onclick="uploadAudio()">
+                    <i class="fas fa-upload me-2"></i>Upload
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .stats-card {
+        border-radius: 15px;
+        transition: transform 0.3s ease;
+    }
+    
+    .stats-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .card {
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+</style>
+
+<script>
+function showUploadModal(type) {
+    if (type === 'manuscript') {
+        new bootstrap.Modal(document.getElementById('manuscriptUploadModal')).show();
+    } else if (type === 'audio') {
+        new bootstrap.Modal(document.getElementById('audioUploadModal')).show();
+    }
+}
+
+async function uploadManuscript() {
+    const form = document.getElementById('manuscriptUploadForm');
+    const formData = new FormData(form);
+    
+    try {
+        const response = await fetch('/admin/manuscripts/upload', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            alert('Manuscript uploaded successfully!');
+            bootstrap.Modal.getInstance(document.getElementById('manuscriptUploadModal')).hide();
+            location.reload();
+        } else {
+            alert(data.message || 'Upload failed');
+        }
+    } catch (error) {
+        console.error('Upload error:', error);
+        alert('Upload failed. Please try again.');
+    }
+}
+
+async function uploadAudio() {
+    const form = document.getElementById('audioUploadForm');
+    const formData = new FormData(form);
+    
+    try {
+        const response = await fetch('/admin/audio/upload', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            alert('Audio file uploaded successfully!');
+            bootstrap.Modal.getInstance(document.getElementById('audioUploadModal')).hide();
+            location.reload();
+        } else {
+            alert(data.message || 'Upload failed');
+        }
+    } catch (error) {
+        console.error('Upload error:', error);
+        alert('Upload failed. Please try again.');
+    }
+}
+</script>
+` }) %>
