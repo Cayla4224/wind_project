@@ -1,0 +1,246 @@
+{% extends "base.html" %}
+
+{% block title %}Upload Files - Wind Project Admin{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">
+    <i class="bi bi-cloud-upload"></i> Upload Files
+</h1>
+
+<div class="row">
+    <div class="col-lg-8">
+        <!-- Upload Tabs -->
+        <ul class="nav nav-tabs" id="uploadTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="manuscript-tab" data-bs-toggle="tab" 
+                        data-bs-target="#manuscript" type="button" role="tab">
+                    <i class="bi bi-file-text"></i> Manuscript
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="audio-tab" data-bs-toggle="tab" 
+                        data-bs-target="#audio" type="button" role="tab">
+                    <i class="bi bi-music-note"></i> Audio File
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="uploadTabsContent">
+            <!-- Manuscript Upload -->
+            <div class="tab-pane fade show active" id="manuscript" role="tabpanel">
+                <div class="card">
+                    <div class="card-body">
+                        <form method="POST" enctype="multipart/form-data" id="manuscriptForm">
+                            <input type="hidden" name="upload_type" value="manuscript">
+                            
+                            <div class="mb-3">
+                                <label for="manuscript_file" class="form-label">
+                                    <i class="bi bi-file-earmark-arrow-up"></i> Select Manuscript File *
+                                </label>
+                                <input type="file" class="form-control" id="manuscript_file" name="file" 
+                                       accept=".pdf,.doc,.docx" required>
+                                <div class="form-text">
+                                    Supported formats: PDF, DOC, DOCX. Maximum size: 500MB.
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="manuscript_title" class="form-label">
+                                            <i class="bi bi-card-heading"></i> Title *
+                                        </label>
+                                        <input type="text" class="form-control" id="manuscript_title" 
+                                               name="title" required placeholder="Enter manuscript title">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="manuscript_author" class="form-label">
+                                            <i class="bi bi-person"></i> Author *
+                                        </label>
+                                        <input type="text" class="form-control" id="manuscript_author" 
+                                               name="author" required placeholder="Enter author name">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="manuscript_description" class="form-label">
+                                    <i class="bi bi-card-text"></i> Description
+                                </label>
+                                <textarea class="form-control" id="manuscript_description" name="description" 
+                                          rows="3" placeholder="Optional description or notes"></textarea>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between">
+                                <button type="button" class="btn btn-secondary" onclick="resetForm('manuscriptForm')">
+                                    <i class="bi bi-arrow-clockwise"></i> Reset
+                                </button>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-upload"></i> Upload Manuscript
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Audio Upload -->
+            <div class="tab-pane fade" id="audio" role="tabpanel">
+                <div class="card">
+                    <div class="card-body">
+                        <form method="POST" enctype="multipart/form-data" id="audioForm">
+                            <input type="hidden" name="upload_type" value="audio">
+                            
+                            <div class="mb-3">
+                                <label for="audio_file" class="form-label">
+                                    <i class="bi bi-file-earmark-music"></i> Select Audio File *
+                                </label>
+                                <input type="file" class="form-control" id="audio_file" name="file" 
+                                       accept=".mp3,.wav,.flac,.m4a" required>
+                                <div class="form-text">
+                                    Supported formats: MP3, WAV, FLAC, M4A. Maximum size: 500MB.
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="audio_title" class="form-label">
+                                            <i class="bi bi-card-heading"></i> Title *
+                                        </label>
+                                        <input type="text" class="form-control" id="audio_title" 
+                                               name="title" required placeholder="Enter audio title">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="audio_narrator" class="form-label">
+                                            <i class="bi bi-mic"></i> Narrator *
+                                        </label>
+                                        <input type="text" class="form-control" id="audio_narrator" 
+                                               name="narrator" required placeholder="Enter narrator name">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="audio_description" class="form-label">
+                                    <i class="bi bi-card-text"></i> Description
+                                </label>
+                                <textarea class="form-control" id="audio_description" name="description" 
+                                          rows="3" placeholder="Optional description or notes"></textarea>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between">
+                                <button type="button" class="btn btn-secondary" onclick="resetForm('audioForm')">
+                                    <i class="bi bi-arrow-clockwise"></i> Reset
+                                </button>
+                                <button type="submit" class="btn btn-success">
+                                    <i class="bi bi-upload"></i> Upload Audio File
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Guidelines -->
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-info-circle"></i> Upload Guidelines</h5>
+            </div>
+            <div class="card-body">
+                <h6><i class="bi bi-file-text text-primary"></i> Manuscripts</h6>
+                <ul class="small mb-3">
+                    <li>Supported formats: PDF, DOC, DOCX</li>
+                    <li>Maximum file size: 500MB</li>
+                    <li>Title and author are required</li>
+                    <li>Files are validated for security</li>
+                </ul>
+                
+                <h6><i class="bi bi-music-note text-success"></i> Audio Files</h6>
+                <ul class="small mb-3">
+                    <li>Supported formats: MP3, WAV, FLAC, M4A</li>
+                    <li>Maximum file size: 500MB</li>
+                    <li>Title and narrator are required</li>
+                    <li>Duration is automatically detected</li>
+                </ul>
+                
+                <div class="alert alert-warning small">
+                    <i class="bi bi-exclamation-triangle"></i>
+                    <strong>Important:</strong> Large files may take several minutes to upload. 
+                    Please be patient and do not refresh the page during upload.
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-shield-check"></i> Security Features</h5>
+            </div>
+            <div class="card-body">
+                <ul class="small mb-0">
+                    <li>File type validation using MIME types</li>
+                    <li>Unique filename generation</li>
+                    <li>Secure file storage</li>
+                    <li>Input sanitization</li>
+                    <li>Size limit enforcement</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Upload Progress Modal -->
+<div class="modal fade" id="uploadProgressModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-cloud-upload"></i> Uploading File...</h5>
+            </div>
+            <div class="modal-body text-center">
+                <div class="spinner-border text-primary mb-3" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p>Please wait while your file is being uploaded and processed.</p>
+                <p class="text-muted small">Do not close this window or navigate away.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function resetForm(formId) {
+    document.getElementById(formId).reset();
+}
+
+// Show upload progress modal on form submit
+document.addEventListener('DOMContentLoaded', function() {
+    const forms = document.querySelectorAll('form[enctype="multipart/form-data"]');
+    const modal = new bootstrap.Modal(document.getElementById('uploadProgressModal'));
+    
+    forms.forEach(form => {
+        form.addEventListener('submit', function(e) {
+            const fileInput = form.querySelector('input[type="file"]');
+            const titleInput = form.querySelector('input[name="title"]');
+            const authorOrNarratorInput = form.querySelector('input[name="author"], input[name="narrator"]');
+            
+            // Validate required fields
+            if (!fileInput.files.length || !titleInput.value.trim() || !authorOrNarratorInput.value.trim()) {
+                return; // Let HTML5 validation handle this
+            }
+            
+            // Show progress modal
+            modal.show();
+        });
+    });
+});
+</script>
+{% endblock %}

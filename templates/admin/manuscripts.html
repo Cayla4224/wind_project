@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block title %}Manuscripts - Wind Project Admin{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="bi bi-file-text"></i> Manuscripts</h1>
+    <a href="{{ url_for('upload_files') }}" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> Upload New
+    </a>
+</div>
+
+{% if manuscripts.items %}
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Type</th>
+                        <th>Size</th>
+                        <th>Upload Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for manuscript in manuscripts.items %}
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-file-earmark-text text-primary me-2"></i>
+                                <div>
+                                    <div class="fw-semibold">{{ manuscript.title }}</div>
+                                    {% if manuscript.description %}
+                                    <small class="text-muted">{{ manuscript.description[:100] }}{% if manuscript.description|length > 100 %}...{% endif %}</small>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{ manuscript.author }}</td>
+                        <td><span class="badge bg-secondary">{{ manuscript.file_type.upper() }}</span></td>
+                        <td>{{ format_file_size(manuscript.file_size) }}</td>
+                        <td>
+                            <div>{{ manuscript.upload_date.strftime('%b %d, %Y') }}</div>
+                            <small class="text-muted">{{ manuscript.upload_date.strftime('%I:%M %p') }}</small>
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a href="{{ url_for('view_manuscript', manuscript_id=manuscript.id) }}" 
+                                   class="btn btn-sm btn-outline-primary" title="View Details">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a href="{{ url_for('download_manuscript', manuscript_id=manuscript.id) }}" 
+                                   class="btn btn-sm btn-outline-success" title="Download">
+                                    <i class="bi bi-download"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <!-- Pagination -->
+    {% if manuscripts.pages > 1 %}
+    <div class="card-footer">
+        <nav aria-label="Manuscripts pagination">
+            <ul class="pagination justify-content-center mb-0">
+                {% if manuscripts.has_prev %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('list_manuscripts', page=manuscripts.prev_num) }}">
+                        <i class="bi bi-chevron-left"></i> Previous
+                    </a>
+                </li>
+                {% endif %}
+                
+                {% for page_num in manuscripts.iter_pages() %}
+                    {% if page_num %}
+                        {% if page_num != manuscripts.page %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('list_manuscripts', page=page_num) }}">{{ page_num }}</a>
+                        </li>
+                        {% else %}
+                        <li class="page-item active">
+                            <span class="page-link">{{ page_num }}</span>
+                        </li>
+                        {% endif %}
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                    {% endif %}
+                {% endfor %}
+                
+                {% if manuscripts.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('list_manuscripts', page=manuscripts.next_num) }}">
+                        Next <i class="bi bi-chevron-right"></i>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+    {% endif %}
+</div>
+
+{% if manuscripts.pages > 1 %}
+<div class="mt-3 text-center text-muted">
+    <small>
+        Showing {{ manuscripts.per_page * (manuscripts.page - 1) + 1 }} to 
+        {{ manuscripts.per_page * (manuscripts.page - 1) + manuscripts.items|length }} 
+        of {{ manuscripts.total }} manuscripts
+    </small>
+</div>
+{% endif %}
+
+{% else %}
+<!-- Empty State -->
+<div class="text-center py-5">
+    <i class="bi bi-file-text display-1 text-muted"></i>
+    <h3 class="mt-3">No Manuscripts Yet</h3>
+    <p class="text-muted">Start by uploading your first manuscript.</p>
+    <a href="{{ url_for('upload_files') }}" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> Upload Manuscript
+    </a>
+</div>
+{% endif %}
+{% endblock %}
