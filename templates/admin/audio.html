@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block title %}Audio Files - Wind Project Admin{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="bi bi-music-note"></i> Audio Files</h1>
+    <a href="{{ url_for('upload_files') }}" class="btn btn-success">
+        <i class="bi bi-plus-circle"></i> Upload New
+    </a>
+</div>
+
+{% if audio_files.items %}
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Narrator</th>
+                        <th>Type</th>
+                        <th>Duration</th>
+                        <th>Size</th>
+                        <th>Upload Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for audio in audio_files.items %}
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-file-earmark-music text-success me-2"></i>
+                                <div>
+                                    <div class="fw-semibold">{{ audio.title }}</div>
+                                    {% if audio.description %}
+                                    <small class="text-muted">{{ audio.description[:100] }}{% if audio.description|length > 100 %}...{% endif %}</small>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{ audio.narrator }}</td>
+                        <td><span class="badge bg-success">{{ audio.file_type.upper() }}</span></td>
+                        <td>
+                            {% if audio.duration %}
+                            <span class="font-monospace">{{ format_duration(audio.duration) }}</span>
+                            {% else %}
+                            <span class="text-muted">Unknown</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ format_file_size(audio.file_size) }}</td>
+                        <td>
+                            <div>{{ audio.upload_date.strftime('%b %d, %Y') }}</div>
+                            <small class="text-muted">{{ audio.upload_date.strftime('%I:%M %p') }}</small>
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a href="{{ url_for('view_audio', audio_id=audio.id) }}" 
+                                   class="btn btn-sm btn-outline-primary" title="View Details">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a href="{{ url_for('download_audio', audio_id=audio.id) }}" 
+                                   class="btn btn-sm btn-outline-success" title="Download">
+                                    <i class="bi bi-download"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <!-- Pagination -->
+    {% if audio_files.pages > 1 %}
+    <div class="card-footer">
+        <nav aria-label="Audio files pagination">
+            <ul class="pagination justify-content-center mb-0">
+                {% if audio_files.has_prev %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('list_audio', page=audio_files.prev_num) }}">
+                        <i class="bi bi-chevron-left"></i> Previous
+                    </a>
+                </li>
+                {% endif %}
+                
+                {% for page_num in audio_files.iter_pages() %}
+                    {% if page_num %}
+                        {% if page_num != audio_files.page %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('list_audio', page=page_num) }}">{{ page_num }}</a>
+                        </li>
+                        {% else %}
+                        <li class="page-item active">
+                            <span class="page-link">{{ page_num }}</span>
+                        </li>
+                        {% endif %}
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                    {% endif %}
+                {% endfor %}
+                
+                {% if audio_files.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('list_audio', page=audio_files.next_num) }}">
+                        Next <i class="bi bi-chevron-right"></i>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+    {% endif %}
+</div>
+
+{% if audio_files.pages > 1 %}
+<div class="mt-3 text-center text-muted">
+    <small>
+        Showing {{ audio_files.per_page * (audio_files.page - 1) + 1 }} to 
+        {{ audio_files.per_page * (audio_files.page - 1) + audio_files.items|length }} 
+        of {{ audio_files.total }} audio files
+    </small>
+</div>
+{% endif %}
+
+{% else %}
+<!-- Empty State -->
+<div class="text-center py-5">
+    <i class="bi bi-music-note display-1 text-muted"></i>
+    <h3 class="mt-3">No Audio Files Yet</h3>
+    <p class="text-muted">Start by uploading your first audio file.</p>
+    <a href="{{ url_for('upload_files') }}" class="btn btn-success">
+        <i class="bi bi-plus-circle"></i> Upload Audio File
+    </a>
+</div>
+{% endif %}
+{% endblock %}

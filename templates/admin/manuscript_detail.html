@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block title %}{{ manuscript.title }} - Wind Project Admin{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="bi bi-file-text"></i> Manuscript Details</h1>
+    <div>
+        <a href="{{ url_for('download_manuscript', manuscript_id=manuscript.id) }}" class="btn btn-success">
+            <i class="bi bi-download"></i> Download
+        </a>
+        <a href="{{ url_for('list_manuscripts') }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back to List
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-info-circle"></i> Manuscript Information</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <dl class="row">
+                            <dt class="col-sm-4">Title:</dt>
+                            <dd class="col-sm-8">{{ manuscript.title }}</dd>
+                            
+                            <dt class="col-sm-4">Author:</dt>
+                            <dd class="col-sm-8">{{ manuscript.author }}</dd>
+                            
+                            <dt class="col-sm-4">File Type:</dt>
+                            <dd class="col-sm-8">
+                                <span class="badge bg-secondary">{{ manuscript.file_type.upper() }}</span>
+                            </dd>
+                            
+                            <dt class="col-sm-4">File Size:</dt>
+                            <dd class="col-sm-8">{{ format_file_size(manuscript.file_size) }}</dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-6">
+                        <dl class="row">
+                            <dt class="col-sm-5">Original Filename:</dt>
+                            <dd class="col-sm-7">
+                                <code>{{ manuscript.original_filename }}</code>
+                            </dd>
+                            
+                            <dt class="col-sm-5">Upload Date:</dt>
+                            <dd class="col-sm-7">
+                                <div>{{ manuscript.upload_date.strftime('%B %d, %Y') }}</div>
+                                <small class="text-muted">{{ manuscript.upload_date.strftime('%I:%M:%S %p') }}</small>
+                            </dd>
+                            
+                            <dt class="col-sm-5">Manuscript ID:</dt>
+                            <dd class="col-sm-7">
+                                <code>#{{ manuscript.id }}</code>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+                
+                {% if manuscript.description %}
+                <hr>
+                <h6><i class="bi bi-card-text"></i> Description</h6>
+                <p class="mb-0">{{ manuscript.description }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-tools"></i> Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('download_manuscript', manuscript_id=manuscript.id) }}" 
+                       class="btn btn-success">
+                        <i class="bi bi-download"></i> Download File
+                    </a>
+                    <button class="btn btn-outline-primary" onclick="copyToClipboard('{{ manuscript.original_filename }}')">
+                        <i class="bi bi-clipboard"></i> Copy Filename
+                    </button>
+                    <button class="btn btn-outline-info" onclick="copyToClipboard('#{{ manuscript.id }}')">
+                        <i class="bi bi-hash"></i> Copy ID
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-pie-chart"></i> File Statistics</h5>
+            </div>
+            <div class="card-body">
+                <div class="text-center">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="border-end">
+                                <div class="h4 text-primary">{{ format_file_size(manuscript.file_size) }}</div>
+                                <small class="text-muted">File Size</small>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="h4 text-info">{{ manuscript.file_type.upper() }}</div>
+                            <small class="text-muted">Format</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(function() {
+        // Show a temporary success message
+        const originalText = event.target.innerHTML;
+        event.target.innerHTML = '<i class="bi bi-check"></i> Copied!';
+        event.target.classList.add('btn-success');
+        event.target.classList.remove('btn-outline-primary', 'btn-outline-info');
+        
+        setTimeout(function() {
+            event.target.innerHTML = originalText;
+            event.target.classList.remove('btn-success');
+            if (originalText.includes('Filename')) {
+                event.target.classList.add('btn-outline-primary');
+            } else {
+                event.target.classList.add('btn-outline-info');
+            }
+        }, 2000);
+    });
+}
+</script>
+{% endblock %}

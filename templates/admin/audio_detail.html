@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+
+{% block title %}{{ audio_file.title }} - Wind Project Admin{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="bi bi-music-note"></i> Audio File Details</h1>
+    <div>
+        <a href="{{ url_for('download_audio', audio_id=audio_file.id) }}" class="btn btn-success">
+            <i class="bi bi-download"></i> Download
+        </a>
+        <a href="{{ url_for('list_audio') }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back to List
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-info-circle"></i> Audio File Information</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <dl class="row">
+                            <dt class="col-sm-4">Title:</dt>
+                            <dd class="col-sm-8">{{ audio_file.title }}</dd>
+                            
+                            <dt class="col-sm-4">Narrator:</dt>
+                            <dd class="col-sm-8">{{ audio_file.narrator }}</dd>
+                            
+                            <dt class="col-sm-4">File Type:</dt>
+                            <dd class="col-sm-8">
+                                <span class="badge bg-success">{{ audio_file.file_type.upper() }}</span>
+                            </dd>
+                            
+                            <dt class="col-sm-4">Duration:</dt>
+                            <dd class="col-sm-8">
+                                {% if audio_file.duration %}
+                                <span class="font-monospace">{{ format_duration(audio_file.duration) }}</span>
+                                {% else %}
+                                <span class="text-muted">Unknown</span>
+                                {% endif %}
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-6">
+                        <dl class="row">
+                            <dt class="col-sm-5">Original Filename:</dt>
+                            <dd class="col-sm-7">
+                                <code>{{ audio_file.original_filename }}</code>
+                            </dd>
+                            
+                            <dt class="col-sm-5">File Size:</dt>
+                            <dd class="col-sm-7">{{ format_file_size(audio_file.file_size) }}</dd>
+                            
+                            <dt class="col-sm-5">Upload Date:</dt>
+                            <dd class="col-sm-7">
+                                <div>{{ audio_file.upload_date.strftime('%B %d, %Y') }}</div>
+                                <small class="text-muted">{{ audio_file.upload_date.strftime('%I:%M:%S %p') }}</small>
+                            </dd>
+                            
+                            <dt class="col-sm-5">Audio ID:</dt>
+                            <dd class="col-sm-7">
+                                <code>#{{ audio_file.id }}</code>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+                
+                {% if audio_file.description %}
+                <hr>
+                <h6><i class="bi bi-card-text"></i> Description</h6>
+                <p class="mb-0">{{ audio_file.description }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-tools"></i> Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('download_audio', audio_id=audio_file.id) }}" 
+                       class="btn btn-success">
+                        <i class="bi bi-download"></i> Download File
+                    </a>
+                    <button class="btn btn-outline-primary" onclick="copyToClipboard('{{ audio_file.original_filename }}')">
+                        <i class="bi bi-clipboard"></i> Copy Filename
+                    </button>
+                    <button class="btn btn-outline-info" onclick="copyToClipboard('#{{ audio_file.id }}')">
+                        <i class="bi bi-hash"></i> Copy ID
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-pie-chart"></i> File Statistics</h5>
+            </div>
+            <div class="card-body">
+                <div class="text-center">
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="border-end">
+                                <div class="h5 text-success">{{ format_file_size(audio_file.file_size) }}</div>
+                                <small class="text-muted">Size</small>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="border-end">
+                                <div class="h5 text-primary">
+                                    {% if audio_file.duration %}
+                                    {{ format_duration(audio_file.duration) }}
+                                    {% else %}
+                                    --:--
+                                    {% endif %}
+                                </div>
+                                <small class="text-muted">Duration</small>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="h5 text-info">{{ audio_file.file_type.upper() }}</div>
+                            <small class="text-muted">Format</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Audio Preview (if supported by browser) -->
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-play-circle"></i> Preview</h5>
+            </div>
+            <div class="card-body">
+                <audio controls class="w-100" preload="none">
+                    <source src="{{ url_for('download_audio', audio_id=audio_file.id) }}" type="audio/{{ audio_file.file_type }}">
+                    Your browser does not support the audio element.
+                </audio>
+                <small class="text-muted d-block mt-2">
+                    <i class="bi bi-info-circle"></i> Preview may not work for all audio formats.
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(function() {
+        // Show a temporary success message
+        const originalText = event.target.innerHTML;
+        event.target.innerHTML = '<i class="bi bi-check"></i> Copied!';
+        event.target.classList.add('btn-success');
+        event.target.classList.remove('btn-outline-primary', 'btn-outline-info');
+        
+        setTimeout(function() {
+            event.target.innerHTML = originalText;
+            event.target.classList.remove('btn-success');
+            if (originalText.includes('Filename')) {
+                event.target.classList.add('btn-outline-primary');
+            } else {
+                event.target.classList.add('btn-outline-info');
+            }
+        }, 2000);
+    });
+}
+</script>
+{% endblock %}
