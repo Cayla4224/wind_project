@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wind E-Book Store</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-book"></i>
+                <span>Wind E-Book Store</span>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="/" class="nav-link">Home</a>
+                <a href="#books" class="nav-link">Books</a>
+                <a href="#audiobooks" class="nav-link">Audiobooks</a>
+                <a href="#subscriptions" class="nav-link">Subscriptions</a>
+                <div class="nav-auth" id="nav-auth">
+                    <a href="/login" class="nav-link login-btn">Login</a>
+                    <a href="/login?register=true" class="nav-link register-btn">Register</a>
+                </div>
+                <div class="nav-user" id="nav-user" style="display: none;">
+                    <div class="user-dropdown">
+                        <button class="user-btn" id="user-btn">
+                            <i class="fas fa-user"></i>
+                            <span id="user-name">User</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-content" id="dropdown-content">
+                            <a href="#" id="dashboard-link"><i class="fas fa-dashboard"></i> Dashboard</a>
+                            <a href="#" id="library-link"><i class="fas fa-book-open"></i> My Library</a>
+                            <a href="#" id="profile-link"><i class="fas fa-user-edit"></i> Profile</a>
+                            <a href="#" id="logout-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-toggle" id="nav-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Discover Your Next Great Read</h1>
+            <p>Access thousands of e-books and audiobooks with our comprehensive library. Subscribe for unlimited access or purchase individual titles.</p>
+            <div class="hero-buttons">
+                <a href="#books" class="btn btn-primary">Browse Books</a>
+                <a href="#subscriptions" class="btn btn-secondary">View Plans</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2>Why Choose Wind E-Book Store?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-book-reader"></i>
+                    <h3>Vast Library</h3>
+                    <p>Access thousands of e-books across all genres from bestsellers to indie authors.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-headphones"></i>
+                    <h3>Audiobooks</h3>
+                    <p>Enjoy professionally narrated audiobooks for your commute or relaxation time.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-crown"></i>
+                    <h3>Flexible Plans</h3>
+                    <p>Choose from free access to premium subscriptions that fit your reading habits.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-pen-fancy"></i>
+                    <h3>For Authors</h3>
+                    <p>Publish your books and reach readers worldwide through our platform.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Books Section -->
+    <section class="books-section" id="books">
+        <div class="container">
+            <h2>Featured Books</h2>
+            <div class="books-filters">
+                <div class="filter-group">
+                    <select id="genre-filter">
+                        <option value="">All Genres</option>
+                        <option value="Fiction">Fiction</option>
+                        <option value="Non-Fiction">Non-Fiction</option>
+                        <option value="Mystery">Mystery</option>
+                        <option value="Romance">Romance</option>
+                        <option value="Sci-Fi">Sci-Fi</option>
+                        <option value="Fantasy">Fantasy</option>
+                        <option value="Biography">Biography</option>
+                        <option value="History">History</option>
+                        <option value="Self-Help">Self-Help</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <input type="text" id="search-input" placeholder="Search books...">
+                    <button id="search-btn"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="filter-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="audiobook-filter">
+                        <span>Audiobooks only</span>
+                    </label>
+                </div>
+            </div>
+            <div class="books-grid" id="books-grid">
+                <!-- Books will be loaded here dynamically -->
+            </div>
+            <div class="pagination" id="pagination">
+                <!-- Pagination will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Subscriptions Section -->
+    <section class="subscriptions-section" id="subscriptions">
+        <div class="container">
+            <h2>Choose Your Plan</h2>
+            <div class="subscription-cards" id="subscription-cards">
+                <!-- Subscription plans will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Wind E-Book Store</h3>
+                    <p>Your gateway to unlimited reading experiences.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#books">Books</a></li>
+                        <li><a href="#audiobooks">Audiobooks</a></li>
+                        <li><a href="#subscriptions">Subscriptions</a></li>
+                        <li><a href="/author">Authors</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Wind E-Book Store. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Loading Spinner -->
+    <div class="loading-spinner" id="loading-spinner" style="display: none;">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Book Modal -->
+    <div class="modal" id="book-modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="book-details">
+                <!-- Book details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>

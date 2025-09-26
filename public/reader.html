@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reader Dashboard - Wind E-Book Store</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="/">
+                    <i class="fas fa-book"></i>
+                    <span>Wind E-Book Store</span>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/#books" class="nav-link">Browse Books</a>
+                <a href="/author" class="nav-link">Author View</a>
+                <div class="nav-user">
+                    <div class="user-dropdown">
+                        <button class="user-btn" id="user-btn">
+                            <i class="fas fa-user"></i>
+                            <span id="user-name">Reader</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-content">
+                            <a href="#subscription" id="subscription-link"><i class="fas fa-crown"></i> Subscription</a>
+                            <a href="#" id="profile-link"><i class="fas fa-user-edit"></i> Profile</a>
+                            <a href="#" id="logout-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Header -->
+    <section class="dashboard-header">
+        <div class="container">
+            <h1><i class="fas fa-book-reader"></i> Reader Dashboard</h1>
+            <p>Your personal library and reading experience</p>
+        </div>
+    </section>
+
+    <!-- Dashboard Content -->
+    <section class="dashboard-content">
+        <div class="container">
+            <!-- Subscription Status -->
+            <div class="subscription-status" id="subscription-status">
+                <!-- Subscription info will be loaded here -->
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="total-library-books">0</h3>
+                        <p>Books in Library</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-headphones"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="total-library-audiobooks">0</h3>
+                        <p>Audiobooks</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="books-this-month">0</h3>
+                        <p>This Month</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="favorite-genre">-</h3>
+                        <p>Favorite Genre</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="dashboard-actions">
+                <a href="/#books" class="btn btn-primary">
+                    <i class="fas fa-search"></i> Browse Books
+                </a>
+                <a href="/#subscriptions" class="btn btn-secondary">
+                    <i class="fas fa-crown"></i> Upgrade Plan
+                </a>
+            </div>
+
+            <!-- My Library -->
+            <div class="dashboard-section">
+                <div class="section-header">
+                    <h2>My Library</h2>
+                    <div class="section-filters">
+                        <select id="library-filter">
+                            <option value="all">All Books</option>
+                            <option value="purchased">Purchased</option>
+                            <option value="subscription">Subscription</option>
+                            <option value="free">Free Books</option>
+                            <option value="audiobooks">Audiobooks</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="library-grid" id="library-grid">
+                    <!-- Library books will be loaded here -->
+                </div>
+                <div class="library-empty" id="library-empty" style="display: none;">
+                    <i class="fas fa-book-open"></i>
+                    <h3>Your library is empty</h3>
+                    <p>Start building your collection by browsing our books</p>
+                    <a href="/#books" class="btn btn-primary">Browse Books</a>
+                </div>
+            </div>
+
+            <!-- Subscription Plans -->
+            <div class="dashboard-section" id="subscription">
+                <div class="section-header">
+                    <h2>Subscription Plans</h2>
+                </div>
+                <div class="subscription-cards" id="subscription-cards">
+                    <!-- Subscription plans will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Reading History -->
+            <div class="dashboard-section">
+                <div class="section-header">
+                    <h2>Recent Activity</h2>
+                </div>
+                <div class="activity-list" id="activity-list">
+                    <!-- Recent activity will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Book Reader Modal -->
+    <div class="modal" id="book-reader-modal">
+        <div class="modal-content reader-modal">
+            <div class="modal-header">
+                <h2 id="reader-book-title">Book Title</h2>
+                <div class="reader-controls">
+                    <button class="btn btn-sm" id="font-size-btn">
+                        <i class="fas fa-text-height"></i>
+                    </button>
+                    <button class="btn btn-sm" id="bookmark-btn">
+                        <i class="fas fa-bookmark"></i>
+                    </button>
+                    <span class="close" onclick="closeBookReader()">&times;</span>
+                </div>
+            </div>
+            <div class="reader-content" id="reader-content">
+                <!-- Book content will be loaded here -->
+            </div>
+            <div class="reader-navigation">
+                <button class="btn btn-secondary" id="prev-page">
+                    <i class="fas fa-chevron-left"></i> Previous
+                </button>
+                <span class="page-info" id="page-info">Page 1 of 1</span>
+                <button class="btn btn-secondary" id="next-page">
+                    Next <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Player Modal -->
+    <div class="modal" id="audio-player-modal">
+        <div class="modal-content audio-modal">
+            <div class="modal-header">
+                <h2 id="audio-book-title">Audiobook Title</h2>
+                <span class="close" onclick="closeAudioPlayer()">&times;</span>
+            </div>
+            <div class="audio-player">
+                <audio controls id="audio-element" style="width: 100%;">
+                    <source id="audio-source" src="" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+                <div class="audio-controls">
+                    <button class="btn btn-sm" id="rewind-btn">
+                        <i class="fas fa-backward"></i> -30s
+                    </button>
+                    <button class="btn btn-sm" id="speed-btn">
+                        1x Speed
+                    </button>
+                    <button class="btn btn-sm" id="forward-btn">
+                        +30s <i class="fas fa-forward"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div class="loading-spinner" id="loading-spinner" style="display: none;">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <span id="toast-message"></span>
+        <button class="toast-close" onclick="hideToast()">&times;</button>
+    </div>
+
+    <script src="/js/auth.js"></script>
+    <script src="/js/reader.js"></script>
+</body>
+</html>
